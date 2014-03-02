@@ -1,0 +1,6 @@
+# History files
+.Rhistory
+
+# Example code in package build process
+*-Ex.R/home/more/laane2/project/gitignore/Global/OSX.gitignore
+/home/more/laane2/project/gitignore/Global/Emacs.gitignore
