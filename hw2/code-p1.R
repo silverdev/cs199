@@ -5,13 +5,13 @@
 #install.packages('cvTools')
 #install.packages('FNN')
 
-# Define functions.
-printf <- function(...) invisible(print(sprintf(...)))
-
 # Load the libraries.
 library(randomForest)
 library(cvTools)
 library(FNN)
+
+# Define functions.
+printf <- function(...) invisible(print(sprintf(...)))
 
 # Read the data.
 spam <- read.csv('spambase.data', h=F)   # h=F (headers=FALSE)
