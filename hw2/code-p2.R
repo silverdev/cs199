@@ -20,6 +20,7 @@ printf <- function(...) invisible(print(sprintf(...)))
 # Read all the lines of the document and store them in a vector of characters.
 msgChars <- readLines("Texts/SMSSpamCollection")
 
+
 # Split by tabs since the labels is separated with a \t from the content.
 msgList <- strsplit(msgChars, '\t')
 
@@ -56,7 +57,7 @@ corpus <- tm_map(corpus, stripWhitespace)
 dtm <- DocumentTermMatrix(corpus)
 
 # Remove sparse terms to get a managable number of terms.
-dtm <- removeSparseTerms(dtm, 0.92)
+dtm <- removeSparseTerms(dtm, 0.98)
 
 # Convert the document term matrix to a standard matrix.
 freqMatrix <- as.data.frame( as.matrix(dtm) )
@@ -70,6 +71,7 @@ spam <- matrix(spam, ncol=ncol(spam), dimnames=NULL)
 # 10 fold cross validation (data divided in 10 parts randomly sampled)
 accuracy <- 0
 kaccuracy <- 0
+accuracyOfAssumingHam <- 0
 folds <- cvFolds(nrow(spam), K=10)
 for(i in 1:10) {
   # Print iteration.
@@ -100,11 +102,17 @@ for(i in 1:10) {
   #  - Get the number of correctly classified samples.
   khits <- length(klabels[klabels == testLabels])
   kaccuracy <- kaccuracy + (khits /nrow(testData))
+
+  ahits <- nrow(testData) -sum(testLabels)
+  accuracyOfAssumingHam <- accuracyOfAssumingHam + (ahits/nrow(testData))
+  
 }
 
 # Print the resulting accuracies.
 accuracy <- (accuracy / 10) * 100
 kaccuracy <- (kaccuracy / 10) * 100
+accuracyOfAssumingHam <- (accuracyOfAssumingHam/ 10) * 100
 
 printf("Random forest accuracy: %.2f %%", accuracy)
 printf("KNN accuracy: %.2f %%", kaccuracy)
+printf("Assuming nothing is spam %.2f %%", accuracyOfAssumingHam)
