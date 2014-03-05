@@ -120,7 +120,6 @@ for (v in termCount){
     accuracy[[v]] <- (accuracy[[v]] / 10) * 100
     kaccuracy[[v]] <- (kaccuracy[[v]] / 10) * 100
    
-    
     printf("Random forest accuracy: %.2f %%", accuracy[[v]])
     printf("KNN accuracy: %.2f %%", kaccuracy[[v]])
     printf("Assuming nothing is spam %.2f %%", accuracyOfAssumingHam)
