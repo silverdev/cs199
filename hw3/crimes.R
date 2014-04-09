@@ -4,6 +4,7 @@
 library(lattice)    # cvTools dep.
 library(robustbase) # cvTools dep.
 library(cvTools)
+library(MASS)
 
 # Define functions.
 printf <- function(...) invisible(print(sprintf(...)))
@@ -65,9 +66,32 @@ klabels <- knn(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")],
 k_test_residuals <- test_data$ViolentCrimesPerPop - as.numeric(levels(klabels))[klabels]
 plot(as.numeric(levels(klabels))[klabels], k_test_residuals)
 
+
 mse_residuals_knn_test <- sum((k_test_residuals - mean(k_test_residuals)) ^ 2) /
     length(k_test_residuals)
 printf("Mean-squared error on the test data with knn regresstion (20%%): %.2e", mse_residuals_knn_test)
+
+# Box cox.
+# Remove zero values.
+no_unkw_data$ViolentCrimesPerPop[which(no_unkw_data$ViolentCrimesPerPop == 0)] = 1e-100
+lambdas <- boxcox(regr, plotit=F)
+max_lambda <- lambdas$x[ which(lambdas$y == max(lambdas$y)) ]
+no_unkw_data$ViolentCrimesPerPop[which(no_unkw_data$ViolentCrimesPerPop == 1e-100)] = 0
+no_unkw_data$ViolentCrimesPerPop <- (no_unkw_data$ViolentCrimesPerPop^max_lambda - 1)/max_lambda
+regr <- lm(ViolentCrimesPerPop ~ ., data=no_unkw_data)
+
+# Cover all the columns with unknowns.
+for(i in attr_with_unkw){
+    # Divide data by rows in two sets: one with the samples that contain a question
+    # mark in that column and one with the rest.
+    unk_indices <- which(clean_data[,i] == '?')
+    i_unk_data <- no_unkw_data[unk_indices, ]
+    i_no_unk_data <- no_unkw_data[-unk_indices, ]
+
+
+}
+
+
 # EXTRA:
 # Data visualization commands:
 #  > View(data)
