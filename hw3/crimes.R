@@ -4,6 +4,7 @@
 library(lattice)    # cvTools dep.
 library(robustbase) # cvTools dep.
 library(cvTools)
+library(MASS)
 
 # Define functions.
 printf <- function(...) invisible(print(sprintf(...)))
@@ -38,6 +39,26 @@ regr_test <- lm(ViolentCrimesPerPop ~ ., data=train_data)
 residuals_test <- test_data$ViolentCrimesPerPop - predict(regr_test, test_data)
 mse_residuals_test <- sum((residuals_test - mean(residuals_test)) ^ 2) / length(residuals_test)
 printf("Mean-squared error on the test data (20%%): %.2e", mse_residuals_test)
+
+# Box cox.
+# Remove zero values.
+no_unkw_data$ViolentCrimesPerPop[which(no_unkw_data$ViolentCrimesPerPop == 0)] = 1e-100
+lambdas <- boxcox(regr, plotit=F)
+max_lambda <- lambdas$x[ which(lambdas$y == max(lambdas$y)) ]
+no_unkw_data$ViolentCrimesPerPop[which(no_unkw_data$ViolentCrimesPerPop == 1e-100)] = 0
+no_unkw_data$ViolentCrimesPerPop <- (no_unkw_data$ViolentCrimesPerPop^max_lambda - 1)/max_lambda
+regr <- lm(ViolentCrimesPerPop ~ ., data=no_unkw_data)
+
+# Cover all the columns with unknowns.
+for(i in attr_with_unkw){
+    # Divide data by rows in two sets: one with the samples that contain a question
+    # mark in that column and one with the rest.
+    unk_indices <- which(clean_data[,i] == '?')
+    i_unk_data <- no_unkw_data[unk_indices, ]
+    i_no_unk_data <- no_unkw_data[-unk_indices, ]
+
+
+}
 
 
 # EXTRA:
