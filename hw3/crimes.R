@@ -85,8 +85,7 @@ plot(regr_box)
 # Cover all the columns with unknowns.
 interplatedData <- clean_data
 
-
-for(i in attr_with_unkw){
+for(i in attr_with_unkw[1:2]){
     # Divide data by rows in two sets: one with the samples that contain a question
     # mark in that column and one with the rest.
     unk_indices <- which(clean_data[,i] == '?')
@@ -99,8 +98,12 @@ for(i in attr_with_unkw){
                    i_no_unk_data$ViolentCrimesPerPop, k = 1,
                    prob = FALSE, algorithm=c("kd_tree"))
     indices <- attr(i_klabels, "nn.index")
-
-    
+    nnSubs <- i_no_unk_data[indices,]
+    for (j in 1:nrow(nnSubs)){
+        #printf("replacing %s with %f \n",
+               interplatedData[row.names(i_unk_data)[j], i], nnSubs[j,i])
+        interplatedData[row.names(i_unk_data)[j], i] <- nnSubs[j,i]
+    }
 }
 
 nn_data <- clean_data
@@ -157,6 +160,7 @@ distance <- function(v1, v2){
 
 
 outer(clean_data, clean_data, FUN = distance)
+
 
 # EXTRA:
 # Data visualization commands:
