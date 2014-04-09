@@ -24,6 +24,8 @@ no_unkw_data <- clean_data[, -attr_with_unkw]
 # Evaluate the regression looking at the mean-squared error on the training data.
 regr <- lm(ViolentCrimesPerPop ~ ., data=no_unkw_data)
 residuals <- resid(regr)  # Function to get the residuals.
+plot(predict(regr, no_unkw_data), residuals) 
+
 mse_residuals <- sum((residuals - mean(residuals)) ^ 2) / length(residuals)
 printf("Mean-squared error on the training data: %.2e", mse_residuals)
 
@@ -35,11 +37,32 @@ test_data  <- no_unkw_data[folds$subsets[folds$which == 1], ]
 
 regr_test <- lm(ViolentCrimesPerPop ~ ., data=train_data)
 
+
 # Standard way to get the residuals.
 residuals_test <- test_data$ViolentCrimesPerPop - predict(regr_test, test_data)
+plot(test_data$ViolentCrimesPerPop, residuals_test)
+
 mse_residuals_test <- sum((residuals_test - mean(residuals_test)) ^ 2) / length(residuals_test)
 printf("Mean-squared error on the test data (20%%): %.2e", mse_residuals_test)
 
+#Nearest neighbors regression
+
+kregr <- knn.reg(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")],
+               test = NULL,
+               train_data$ViolentCrimesPerPop, k = 1,
+               algorithm=c("kd_tree"))
+
+plot(kregr$pred, kregr$residuals) 
+
+klabels <- knn(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")],
+               test_data[!(names(test_data)) %in% c("ViolentCrimesPerPop")],
+               train_data$ViolentCrimesPerPop, k = 1,
+               prob = FALSE, algorithm=c("kd_tree"))
+
+plot(as.numeric(levels(klabels))[klabels],
+     test_data$ViolentCrimesPerPop - as.numeric(levels(klabels))[klabels]) 
+
+<<<<<<< HEAD
 # Box cox.
 # Remove zero values.
 no_unkw_data$ViolentCrimesPerPop[which(no_unkw_data$ViolentCrimesPerPop == 0)] = 1e-100
@@ -59,7 +82,6 @@ for(i in attr_with_unkw){
 
 
 }
-
 
 # EXTRA:
 # Data visualization commands:
