@@ -97,7 +97,6 @@ for(i in attr_with_unkw){
                    prob = FALSE, algorithm=c("kd_tree"))
     indices <- attr(i_klabels, "nn.index")
     nnSubs <- i_unk_data[indices,]
-    View(nnSubs)
     for (j in 1:nrow(nnSubs)){
         interplatedData[nnSubs$row.names[j] ,i] <- nnSubs[j,i]
     }
