@@ -74,6 +74,8 @@ if (max_lambda == 0) {
 
 # Compute the linear regression again and plot it.
 boxcox_regr <- lm(ViolentCrimesPerPop ~ ., data=boxcox_data)
+box_residuals_test <- sum((boxcox_regr$residuals - mean(boxcox_regr$residuals)) ^ 2) / length(boxcox_regr$residuals)
+printf(" - Mean-squared error on the Boxcox all data: %.2e", box_residuals_test)
 plot(boxcox_regr)
 
 
@@ -87,12 +89,14 @@ nn_regr <- knn.reg(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")
                    test = NULL,
                    train_data$ViolentCrimesPerPop, k = 1,
                    algorithm = c("kd_tree"))
-plot(nn_regr$pred, nn_regr$residuals) 
+plot(nn_regr$pred, nn_regr$residuals)
+#png("Nearest_Neighbours_all_data.png")
 
 # Evaluate the regression on the above training data with mean-squared error.
 mse_residuals_knn <- sum((nn_regr$residuals - mean(nn_regr$residuals)) ^ 2) /
     length(nn_regr$residuals)
-printf(" - Mean-squared error on the training data (80%%): %.2e", mse_residuals_knn)
+printf(" - Mean-squared error on whole data with cross validation: %.2e",
+       mse_residuals_knn)
 
 # Compute the regression on the above test data.
 klabels <- knn(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")],
@@ -101,7 +105,7 @@ klabels <- knn(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")],
                prob = FALSE, algorithm = c("kd_tree"))
 k_test_residuals <- test_data$ViolentCrimesPerPop - as.numeric(levels(klabels))[klabels]
 plot(as.numeric(levels(klabels))[klabels], k_test_residuals)
-
+# png("Nearest_Neighbours_trainning_data.png")
 # Evaluate the previous regression with mean-squared error and print the result.
 mse_residuals_knn_test <- sum((k_test_residuals - mean(k_test_residuals)) ^ 2) /
     length(k_test_residuals)
@@ -163,4 +167,6 @@ printf(" - Mean-squared error on the test data (20%%): %.2e", mse_residuals_knn_
 #  > View(data)
 #  > summary(data)
 
+
 # plot(predict(linear_regr, no_unkw_data), residuals) 
+

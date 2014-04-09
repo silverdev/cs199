@@ -64,7 +64,7 @@
 
 % Homework Specific Information
 \newcommand{\hmwkTopic}{Predicting Crime Rates}
-\newcommand{\hmwkTitle}{HW2 - \hmwkTopic}
+\newcommand{\hmwkTitle}{HW3 - \hmwkTopic}
 \newcommand{\hmwkDueDate}{April 8, 2014}
 \newcommand{\hmwkClass}{CS 199}
 \newcommand{\hmwkAuthorNameA}{Sam Laane}
@@ -118,7 +118,7 @@
 
 \section{Basics - Linear regression}
 \subsection{Implementation}
-\lstinputlisting[firstline=31, lastline=78]{crimes.R}
+\lstinputlisting[firstline=31, lastline=79]{crimes.R}
 
 \subsection{Results}
  - Mean-squared error on the whole data: 1.66e-02 \\
@@ -131,13 +131,26 @@
     \centering
     \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{Linear_regression_residuals.pdf}
 \end{figure}
-\FloatBarrier
+
 
 \vspace{-0.5cm}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{Linear_regression_cook.pdf}
 \end{figure}
+\FloatBarrier
+\subsection{Conclusions}
+The Mean-squared error on both the full regression 
+and the tested regression are both quite small. 
+The tested regression Mean-squared error is a little larger as it has less data
+
+The residual graph was relatively poorly behaved with some strange linear structures.
+The lack a ``banna'' shows that our problem is not likely to be fixed by Boxcox or other types of transformed. We need more explanatory values.
+According to the Residuals VS Leverage graph no points had undue influence
+or worry some cooks distance.
+
+This show that the regression is likely possible with our data but needs work.
+
 \FloatBarrier
 
 \newpage
@@ -155,15 +168,24 @@
     \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{Boxcox_regression_cook.pdf}
 \end{figure}
 \FloatBarrier
+\subsection{Results}
+ - Mean-squared error on the Boxcox all data: 1.85e-01
+\FloatBarrier
 
 \subsection{Conclusions}
+Our Boxcox transformed data looked promising but has a larger Mean-squared error.
+The residual graph shows that while the data looks straighter the linear structures can still be seen.
+However the when one accounts for the change in base in the distortion graph looks far worse. We also see that at low fitted values the data looks split and some have extremely low Residuals. This is likely caused by values extremely close to zero.
 
-\section{Basics - Nearest Neighbour regression}
+Boxcox was useless. 
+
+\section{Basics - Nearest Neighbor regression}
 \subsection{Implementation}
-\lstinputlisting[firstline=85, lastline=108]{crimes.R}
+\lstinputlisting[firstline=84, lastline=112]{crimes.R}
 
 \subsection{Results}
- - Mean-squared error on the test data (20\%): 3.64e-02
+
+- Mean-squared error on the test data (20\%): 3.64e-02
 
 
 \vspace{-0.5cm}
@@ -173,11 +195,17 @@
 \end{figure}
 \FloatBarrier
 
+
 \subsection{Conclusions}
+The Mean-squared error on k-nearest neighbor regression did not work as well as the
+ linear regression. It's  Mean-squared error was signifantly higher and looks worse.
+ Scaling the data changed nothing. I am guessing that the data set was prescaled.
 
 \section{Dealing with missing values}
 \subsection{Implementation}
-\lstinputlisting[firstline=110, lastline=159]{crimes.R}
+
+\lstinputlisting[firstline=114, lastline=163]{crimes.R}
+
 
 \subsection{Results}
 Linear Regression (imputed missing values):
