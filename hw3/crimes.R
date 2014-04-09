@@ -5,6 +5,7 @@ library(lattice)    # cvTools dep.
 library(robustbase) # cvTools dep.
 library(cvTools)
 library(MASS)
+library(FNN)
 
 # Define functions.
 printf <- function(...) invisible(print(sprintf(...)))
@@ -78,18 +79,28 @@ lambdas <- boxcox(regr, plotit=F)
 max_lambda <- lambdas$x[ which(lambdas$y == max(lambdas$y)) ]
 no_unkw_data$ViolentCrimesPerPop[which(no_unkw_data$ViolentCrimesPerPop == 1e-100)] = 0
 no_unkw_data$ViolentCrimesPerPop <- (no_unkw_data$ViolentCrimesPerPop^max_lambda - 1)/max_lambda
-regr <- lm(ViolentCrimesPerPop ~ ., data=no_unkw_data)
+regr_box<- lm(ViolentCrimesPerPop ~ ., data=no_unkw_data)
+plot(regr_box)
 
 # Cover all the columns with unknowns.
+interplatedData <- clean_data
+
+
 for(i in attr_with_unkw){
     # Divide data by rows in two sets: one with the samples that contain a question
     # mark in that column and one with the rest.
     unk_indices <- which(clean_data[,i] == '?')
     i_unk_data <- no_unkw_data[unk_indices, ]
     i_no_unk_data <- no_unkw_data[-unk_indices, ]
+    i_klabels <- knn(i_no_unk_data,
+                   i_unk_data,
+                   i_no_unk_data$ViolentCrimesPerPop, k = 1,
+                   prob = FALSE, algorithm=c("kd_tree"))
+    indices <- attr(i_klabels, "nn.index")
 
-
+    
 }
+
 
 
 # EXTRA:
