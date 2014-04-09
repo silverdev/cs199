@@ -53,14 +53,21 @@ kregr <- knn.reg(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")],
 
 plot(kregr$pred, kregr$residuals) 
 
+mse_residuals_knn <- sum((kregr$residuals - mean(kregr$residuals)) ^ 2) /
+    length(kregr$residuals)
+printf("Mean-squared error on the training data: %.2e", mse_residuals_knn)
+#Nearest neighbors regression on the split off test data from above
 klabels <- knn(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")],
                test_data[!(names(test_data)) %in% c("ViolentCrimesPerPop")],
                train_data$ViolentCrimesPerPop, k = 1,
                prob = FALSE, algorithm=c("kd_tree"))
 
-plot(as.numeric(levels(klabels))[klabels],
-     test_data$ViolentCrimesPerPop - as.numeric(levels(klabels))[klabels]) 
+k_test_residuals <- test_data$ViolentCrimesPerPop - as.numeric(levels(klabels))[klabels]
+plot(as.numeric(levels(klabels))[klabels], k_test_residuals)
 
+mse_residuals_knn_test <- sum((k_test_residuals - mean(k_test_residuals)) ^ 2) /
+    length(k_test_residuals)
+printf("Mean-squared error on the test data with knn regresstion (20%%): %.2e", mse_residuals_knn_test)
 # EXTRA:
 # Data visualization commands:
 #  > View(data)
