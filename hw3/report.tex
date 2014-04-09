@@ -112,6 +112,11 @@
 
 \clearpage
 
+\section{Introduction}
+This assignment consisted on the implementation of several \emph{regression} methods to try to predict the rate of violent crimes per population of several cities of the United States. \\
+
+For that purpose, a dataset from the \emph{UC Irvine} machine learning repository was provided. The programming language used have been \texttt{R}, and this report have been typeset using \LaTeX.
+
 \section{Removing variables with missing values}
 \subsection{Implementation}
 \lstinputlisting[firstline=13, lastline=23]{crimes.R}
@@ -121,8 +126,12 @@
 \lstinputlisting[firstline=31, lastline=79]{crimes.R}
 
 \subsection{Results}
- - Mean-squared error on the whole data: 1.66e-02 \\
- - Mean-squared error on the test data (20\%): 1.88e-02
+
+\begin{itemize}
+	\item Mean-squared error on the \emph{whole data}: \textbf{1.66e-02}
+  	\item Mean-squared error on the \emph{test data} (20\%): \textbf{1.88e-02}
+  	\item Mean-squared error on the \emph{Box-Cox transformed data}: \textbf{1.85e-01}
+\end{itemize}
 
 \newpage
 \subsubsection{Standard data}
@@ -132,25 +141,11 @@
     \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{Linear_regression_residuals.pdf}
 \end{figure}
 
-
 \vspace{-0.5cm}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{Linear_regression_cook.pdf}
 \end{figure}
-\FloatBarrier
-\subsection{Conclusions}
-The Mean-squared error on both the full regression 
-and the tested regression are both quite small. 
-The tested regression Mean-squared error is a little larger as it has less data
-
-The residual graph was relatively poorly behaved with some strange linear structures.
-The lack a ``banna'' shows that our problem is not likely to be fixed by Boxcox or other types of transformed. We need more explanatory values.
-According to the Residuals VS Leverage graph no points had undue influence
-or worry some cooks distance.
-
-This show that the regression is likely possible with our data but needs work.
-
 \FloatBarrier
 
 \newpage
@@ -168,11 +163,22 @@ This show that the regression is likely possible with our data but needs work.
     \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{Boxcox_regression_cook.pdf}
 \end{figure}
 \FloatBarrier
-\subsection{Results}
- - Mean-squared error on the Boxcox all data: 1.85e-01
-\FloatBarrier
 
 \subsection{Conclusions}
+\subsubsection{Standard data}
+The Mean-squared error on both the full regression 
+and the tested regression are both quite small. 
+The tested regression Mean-squared error is a little larger as it has less data
+
+The residual graph was relatively poorly behaved with some strange linear structures.
+The lack a ``banna'' shows that our problem is not likely to be fixed by Boxcox or other types of transformed. We need more explanatory values.
+According to the Residuals VS Leverage graph no points had undue influence
+or worry some cooks distance.
+
+This show that the regression is likely possible with our data but needs work.
+
+
+\subsubsection{Box-Cox transformed data}
 Our Boxcox transformed data looked promising but has a larger Mean-squared error.
 The residual graph shows that while the data looks straighter the linear structures can still be seen.
 However the when one accounts for the change in base in the distortion graph looks far worse. We also see that at low fitted values the data looks split and some have extremely low Residuals. This is likely caused by values extremely close to zero.
