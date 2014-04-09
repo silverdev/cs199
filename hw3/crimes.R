@@ -55,31 +55,33 @@ printf(" - Mean-squared error on the test data (20%%): %.2e", mse_residuals_test
 
 # Prepare the data for the Box-Cox tranformation substituting zero values by
 # a very small number.
-no_unkw_data$ViolentCrimesPerPop[ which(no_unkw_data$ViolentCrimesPerPop == 0) ] <- 1e-100
+boxcox_data <- no_unkw_data
+boxcox_data$ViolentCrimesPerPop[ which(boxcox_data$ViolentCrimesPerPop == 0) ] <- 1e-100
 
 # Apply Box-Cox and get a list of the lamdbas and their log likelihood and obtain 
 # the value with the highest likelihood.
-lambdas <- boxcox(linear_regr, plotit=F)
+linear_regr_mod <- lm(ViolentCrimesPerPop ~ ., data=boxcox_data)
+lambdas <- boxcox(linear_regr_mod, plotit=F)
 max_lambda <- lambdas$x[ which(lambdas$y == max(lambdas$y)) ]
 
 # Change the very low values to zero again.
-no_unkw_data$ViolentCrimesPerPop[which(no_unkw_data$ViolentCrimesPerPop == 1e-100)] <- 0
+boxcox_data$ViolentCrimesPerPop[which(boxcox_data$ViolentCrimesPerPop == 1e-100)] <- 0
 
 # Transform the data with the given value of lambda.
-if (lambda == 0) {
-  no_unkw_data$ViolentCrimesPerPop <- log(no_unkw_data$ViolentCrimesPerPop)
+if (max_lambda == 0) {
+  boxcox_data$ViolentCrimesPerPop <- log(boxcox_data$ViolentCrimesPerPop)
 } else {
-  no_unkw_data$ViolentCrimesPerPop <- (no_unkw_data$ViolentCrimesPerPop^max_lambda - 1)/max_lambda
+  boxcox_data$ViolentCrimesPerPop <- (boxcox_data$ViolentCrimesPerPop^max_lambda - 1)/max_lambda
 }
 
 # Compute the linear regression again and plot it.
-boxcox_regr <- lm(ViolentCrimesPerPop ~ ., data=no_unkw_data)
+boxcox_regr <- lm(ViolentCrimesPerPop ~ ., data=boxcox_data)
 plot(boxcox_regr)
 
 
-###########################
+############################
 ###  Nearest Neighbours  ###
-###########################
+############################
 printf("Nearest Neighbours:")
 
 # Compute the regression and plot it.
@@ -134,7 +136,18 @@ folds <- cvFolds(nrow(interpolated_data), K=5)
 train_data <- interpolated_data[folds$subsets[folds$which != 1], ]
 test_data  <- interpolated_data[folds$subsets[folds$which == 1], ]
 
-# Compute the nearest neighbour regression again and evaluate it.
+# Compute a linear regression again and evaluate it with mean-squares.
+printf("Linear Regression (imputed missing values):")
+linear_regr_test <- lm(ViolentCrimesPerPop ~ ., data=train_data)
+
+residuals_test <- test_data$ViolentCrimesPerPop - predict(linear_regr_test, test_data)
+plot(test_data$ViolentCrimesPerPop, residuals_test)
+
+mse_residuals_test <- sum((residuals_test - mean(residuals_test)) ^ 2) / length(residuals_test)
+printf(" - Mean-squared error on the test data (20%%): %.2e", mse_residuals_test)
+
+# Also, compute a nearest neighbour regression and evaluate it.
+printf("Nearest Neighbours (imputed missing values):")
 klabels <- knn(train_data[!(names(train_data)) %in% c("ViolentCrimesPerPop")],
                test_data [!(names(test_data))  %in% c("ViolentCrimesPerPop")],
                train_data$ViolentCrimesPerPop, k = 1,

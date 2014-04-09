@@ -1,0 +1,147 @@
+\documentclass[12pt,a4paper]{article}
+% Change "article" to "report" to get rid of page number on title page
+\usepackage{amsmath,mathtools,amsfonts,amsthm,amssymb}
+\usepackage{setspace}
+\usepackage{Tabbing}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{extramarks}
+\usepackage{chngpage}
+\usepackage{fourier}
+\usepackage{soul,color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{graphicx,float,wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage{sidecap}
+\usepackage{marvosym}
+\usepackage{tikz, tikz-qtree}
+\usepackage{tabularx, multirow}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\definecolor{gray99}{gray}{.99}
+\usepackage{listings}
+\usepackage[english]{babel}
+\usepackage{placeins}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{xspace}
+\usepackage{mathtools}
+\usepackage{tabulary}
+\lstset{
+	language=R,
+	backgroundcolor=\color{gray99},
+	tabsize=3,
+	frame=single,
+	keywordstyle=\ttfamily\bfseries\color{RoyalBlue},
+	commentstyle=\ttfamily\color{ForestGreen},
+	stringstyle=\ttfamily\color{Gray},
+	breaklines=true,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	emph={label},
+	xleftmargin=22pt,
+	framexleftmargin=22pt,
+	framexrightmargin=0pt,
+	framexbottommargin=4pt,
+	numbers=left,
+	stepnumber=1
+}
+\usepackage{caption}
+\DeclareCaptionFont{black}{\color{black}}{\bfseries}
+\DeclareCaptionFormat{listing}{\parbox{\textwidth}{\hspace{8pt}#1#2#3}}
+\captionsetup[lstlisting]{format=listing,labelfont=black,textfont=black, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+% In case you need to adjust margins:
+\topmargin=-0.45in      %
+\evensidemargin=0in     %
+\oddsidemargin=0in      %
+\textwidth=6.5in        %
+\textheight=9.5in       %
+\headsep=0.25in         %
+
+% Special font
+\newcommand{\cps}[2]{\ensuremath{[[{#1}]]_{\textstyle #2}}}
+
+% Homework Specific Information
+\newcommand{\hmwkTopic}{Predicting Crime Rates}
+\newcommand{\hmwkTitle}{HW2 - \hmwkTopic}
+\newcommand{\hmwkDueDate}{April 8, 2014}
+\newcommand{\hmwkClass}{CS 199}
+\newcommand{\hmwkAuthorNameA}{Sam Laane}
+\newcommand{\hmwkAuthorEmailA}{laane2@illinois.edu}
+\newcommand{\hmwkAuthorNameB}{José Vicente Ruiz}
+\newcommand{\hmwkAuthorEmailB}{ruizcep2@illinois.edu}
+
+% Setup the header and footer
+\pagestyle{fancy}                                                       %
+\lhead{\hmwkAuthorNameA \xspace \& \hmwkAuthorNameB}                                                 %
+\chead{\hmwkClass}  %
+\rhead{\hmwkTopic}     
+                                                %
+\lfoot{}                                                      %
+\cfoot{\thepage}                                                        %
+\rfoot{}                          %
+\renewcommand\headrulewidth{0.4pt}                                      %
+\renewcommand\footrulewidth{0.4pt}                                      %
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make title
+\title{\vspace{2in}\textmd{\hmwkClass\\\textbf{\hmwkTitle}}\\\normalsize\vspace{0.1in}\small{\hmwkDueDate}\\\vspace{4in}}
+\date{}
+\author{\textbf{\hmwkAuthorNameA} $\;$<\texttt{\href{mailto:laane2@illinois.edu}{\hmwkAuthorEmailA}}>\\\textbf{\hmwkAuthorNameB} $\;$<\texttt{\href{mailto:ruizcep2@illinois.edu}{\hmwkAuthorEmailB}}>}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{singlespace}
+
+\begin{titlepage}
+\maketitle
+\thispagestyle{empty}
+\end{titlepage}
+
+% Uncomment the \tableofcontents and \newpage lines to get a Contents page
+% Uncomment the \setcounter line as well if you do NOT want subsections
+%       listed in Contents
+%\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+% When problems are long, it may be desirable to put a \newpage or a
+% \clearpage before each homeworkProblem environment
+
+\clearpage
+
+\section{Removing variables with missing values}
+\subsection{Implementation}
+\lstinputlisting[firstline=13, lastline=23]{crimes.R}
+
+\section{Basics - Linear regression}
+\subsection{Implementation}
+\lstinputlisting[firstline=31, lastline=79]{crimes.R}
+
+\subsection{Results}
+\subsection{Conclusions}
+
+\section{Basics - Nearest Neighbour regression}
+\subsection{Implementation}
+\lstinputlisting[firstline=87, lastline=110]{crimes.R}
+
+\subsection{Results}
+\subsection{Conclusions}
+
+\section{Dealing with missing values}
+\subsection{Implementation}
+\lstinputlisting[firstline=110, lastline=161]{crimes.R}
+
+\subsection{Results}
+\subsection{Conclusions}
+
+\section{Modified Nearest Neighbours}
+\subsection{Implementation}
+\subsection{Results}
+\subsection{Conclusions}
+
+
+\end{singlespace}
+\end{document}
