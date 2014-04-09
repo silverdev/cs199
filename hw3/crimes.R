@@ -33,8 +33,6 @@ linear_regr <- lm(ViolentCrimesPerPop ~ ., data=no_unkw_data)
 
 # Evaluate the regression looking at the mean-squared error on the training data.
 residuals <- resid(linear_regr)  # Function to get the residuals.
-plot(predict(linear_regr, no_unkw_data), residuals) 
-
 mse_residuals <- sum((residuals - mean(residuals)) ^ 2) / length(residuals)
 printf(" - Mean-squared error on the whole data: %.2e", mse_residuals)
 
@@ -164,3 +162,5 @@ printf(" - Mean-squared error on the test data (20%%): %.2e", mse_residuals_knn_
 # Data visualization commands:
 #  > View(data)
 #  > summary(data)
+
+# plot(predict(linear_regr, no_unkw_data), residuals) 
