@@ -239,6 +239,21 @@ Nearest Neighbours (imputed missing values):
 \FloatBarrier
 
 \subsection{Conclusions}
+The Mean-squared error of the test sets did not change much for liner regression 
+on this new data. The Mean-square error was far worse for the nearest neighbors.
+
+If Residuals graph looks like it has a slightly better shape but larger residuals.
+if you look at the leverage graph it is clear that a few points have higher 
+leverage and one point even has a cooks distance of one.
+
+It seams that implementation of missing values lets us have more 
+explanatory variables but add more noise. For linear regression it's 
+a wash but for nearest neighbors the noise is too much.
+
+The additional explanatory variables is not enough to fix our regression
+and are likely not woth the truble.
+
+
 
 \section{Modified Nearest Neighbours}
 \subsection{Implementation}
