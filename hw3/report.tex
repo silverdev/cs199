@@ -166,33 +166,27 @@ For that purpose, a dataset from the \emph{UC Irvine} machine learning repositor
 
 \subsection{Conclusions}
 \subsubsection{Standard data}
-The Mean-squared error on both the full regression 
-and the tested regression are both quite small. 
-The tested regression Mean-squared error is a little larger as it has less data
+The Mean-squared error on both the full \emph{regression} and the \emph{regression} computed over the test data are both quite small. The later is a little larger probably because it has less data. \\
 
 The residual graph was relatively poorly behaved with some strange linear structures.
-The lack a ``banna'' shows that our problem is not likely to be fixed by Boxcox or other types of transformed. We need more explanatory values.
-According to the Residuals VS Leverage graph no points had undue influence
-or worry some cooks distance.
-
-This show that the regression is likely possible with our data but needs work.
+The lack of a \emph{``banana''} shows that our problem is not likely to be fixed by \emph{Box-Cox} or other types of transformed. We need more explanatory values.
+According to the \texttt{Residuals Vs Leverage} graph no points had undue influence
+or we have to worry about \emph{Cook's distance}. This show that the \emph{regression} is likely possible with our data but needs work.
 
 
 \subsubsection{Box-Cox transformed data}
-Our Boxcox transformed data looked promising but has a larger Mean-squared error.
-The residual graph shows that while the data looks straighter the linear structures can still be seen.
-However the when one accounts for the change in base in the distortion graph looks far worse. We also see that at low fitted values the data looks split and some have extremely low Residuals. This is likely caused by values extremely close to zero.
+The \emph{Box-Cox} transformed data looked promising but has a larger Mean-squared error. Besides, the residual graph shows that while the data looks straighter the linear structures can still be seen. \\
 
-Boxcox was useless. 
+Moreover, when one accounts for the change in base of the distortion of the residual structure, the result looks far worse. We also see that at low fitted values the data looks split and some have extremely low residuals. This is likely caused by values extremely close to zero used to represent zero, which is required to generate the \emph{Box-Cox} transformation. So, in conclussion, \emph{Box-Cox} was useless. 
 
 \section{Basics - Nearest Neighbor regression}
 \subsection{Implementation}
-\lstinputlisting[firstline=84, lastline=112]{crimes.R}
+\lstinputlisting[firstline=87, lastline=112]{crimes.R}
 
 \subsection{Results}
-
-- Mean-squared error on the test data (20\%): 3.64e-02
-
+\begin{itemize}
+    \item Mean-squared error on the \emph{test data} (20\%): \textbf{3.64e-02}
+\end{itemize}
 
 \vspace{-0.5cm}
 \begin{figure}[h!]
@@ -203,10 +197,9 @@ Boxcox was useless.
 
 
 \subsection{Conclusions}
-The Mean-squared error on k-nearest neighbor regression did not work as well as the
- linear regression. It's  Mean-squared error was signifantly higher and looks worse.
- Scaling the data changed nothing. I am guessing that the data set was prescaled.
+The Mean-squared error on k-nearest neighbor \emph{regression} did not work as well as the linear \emph{regression}. Its Mean-squared error was signicantly higher and the \texttt{Residuals Vs Label} plot looks the worse. Scaling the data changed nothing, so we guess that the data set was prescaled.
 
+\newpage
 \section{Dealing with missing values}
 \subsection{Implementation}
 
@@ -214,12 +207,17 @@ The Mean-squared error on k-nearest neighbor regression did not work as well as 
 
 
 \subsection{Results}
-Linear Regression (imputed missing values):
- - Mean-squared error on the test data (20\%): 1.88e-02
-Nearest Neighbours (imputed missing values):
- - Mean-squared error on the test data (20\%): 1.00e-01
+\begin{itemize}
+    \item Linear Regression (imputed missing values):
+    \begin{itemize}
+        \item Mean-squared error on the \emph{test data} (20\%): \textbf{1.88e-02}
+    \end{itemize}
+    \item Nearest Neighbours (imputed missing values):
+    \begin{itemize}
+        \item Mean-squared error on the \emph{test data} (20\%): \textbf{1.00e-01}
+    \end{itemize}
+\end{itemize}
 
-\newpage
 \subsubsection{Linear regression}
 \vspace{-0.5cm}
 \begin{figure}[h!]
@@ -245,19 +243,13 @@ Nearest Neighbours (imputed missing values):
 \FloatBarrier
 
 \subsection{Conclusions}
-The Mean-squared error of the test sets did not change much for liner regression 
-on this new data. The Mean-square error was far worse for the nearest neighbors.
+On one side, the Mean-squared error of the test sets did not change much for linear \emph{regression} on this new data with imputed values. On the other side, The Mean-square error was far worse for the nearest neighbors. \\ 
 
-If Residuals graph looks like it has a slightly better shape but larger residuals.
-if you look at the leverage graph it is clear that a few points have higher 
-leverage and one point even has a cooks distance of one.
+Residuals graph looks like it has a slightly better shape but larger residuals. Also, if you look at the leverage graph it is clear that a few points have higher 
+leverage and one point even has a cooks distance of one. \\
 
-It seams that implementation of missing values lets us have more 
-explanatory variables but add more noise. For linear regression it's 
-a wash but for nearest neighbors the noise is too much.
-
-The additional explanatory variables is not enough to fix our regression
-and are likely not woth the truble.
+It seems that the imputation of missing values let's us have more explanatory variables but it also adds more noise. For linear \emph{regression} it's 
+a wash but for nearest neighbors the noise is too much. The additional explanatory variables is not enough to fix our \emph{regression} and are likely not worth the trouble.
 
 
 
