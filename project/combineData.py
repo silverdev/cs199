@@ -4,7 +4,8 @@ import csv
 # Gives 0 if they did not answer that question or do not appear in the dataset.
 
 header = ["coursera_user"] #A row containing the headers for all the useful data points
-newcsv = {} #A dict where the key is the user and the value is a list of scores
+alldata = {} #A dict where the key is the user and the value is a list of scores
+newcsv = {}
 for quiz in range(9):
     if quiz < 8:
         datafile = open('week'+str(quiz+1)+'quiz1.csv', 'r')
@@ -26,12 +27,22 @@ for quiz in range(9):
                 else:
                     valid.append(False)
             else:
-                if i == id_pos:
-                    if int(row[i]) not in newcsv: #Appends values for people that do not appear in data as well! (in a somewhat hacky fashion)
-                        newcsv[int(row[i])] = ['?' for x in range(200)]
-                if valid[i]:
-                    newcsv[int(row[id_pos])][quiz*20 + val] = (row[i])
-                    val += 1
+                if quiz<8:
+                    if i == id_pos:
+                        if int(row[i]) not in alldata: #Appends values for people that do not appear in data as well! (in a somewhat hacky fashion)
+                            alldata[int(row[i])] = ['?' for x in range(200)]
+                    if valid[i]:
+                        alldata[int(row[id_pos])][quiz*20 + val] = (row[i])
+                        val += 1
+                else:
+                    if i == id_pos:
+                        if int(row[i]) not in alldata: #Appends only people taking the final exam
+                            newcsv[int(row[i])] = ['?' for x in range(200)]
+                        else:
+                            newcsv[int(row[i])] = alldata[int(row[i])]
+                    if valid[i]:
+                        newcsv[int(row[id_pos])][quiz*20 + val] = (row[i])
+                        val += 1
         first = False
 
 writefile = open('combinedw?.csv', 'w')
