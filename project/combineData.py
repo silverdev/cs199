@@ -28,13 +28,13 @@ for quiz in range(9):
             else:
                 if i == id_pos:
                     if int(row[i]) not in newcsv: #Appends values for people that do not appear in data as well! (in a somewhat hacky fashion)
-                        newcsv[int(row[i])] = [0 for x in range(200)]
+                        newcsv[int(row[i])] = ['?' for x in range(200)]
                 if valid[i]:
-                    newcsv[int(row[id_pos])][quiz*20 + val] = (int(row[i]))
+                    newcsv[int(row[id_pos])][quiz*20 + val] = (row[i])
                     val += 1
         first = False
 
-writefile = open('combined.csv', 'w')
+writefile = open('combinedw?.csv', 'w')
 writer = csv.writer(writefile)
 writer.writerow(header)
 for uid, scores in newcsv.iteritems():
