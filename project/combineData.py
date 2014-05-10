@@ -4,8 +4,7 @@ import csv
 # Gives 0 if they did not answer that question or do not appear in the dataset.
 
 header = ["coursera_user"] #A row containing the headers for all the useful data points
-alldata = {} #A dict where the key is the user and the value is a list of scores
-newcsv = {}
+newcsv = {} #A dict where the key is the user and the value is a list of scores
 for quiz in range(9):
     if quiz < 8:
         datafile = open('week'+str(quiz+1)+'quiz1.csv', 'r')
@@ -27,26 +26,38 @@ for quiz in range(9):
                 else:
                     valid.append(False)
             else:
-                if quiz<8:
-                    if i == id_pos:
-                        if int(row[i]) not in alldata: #Appends values for people that do not appear in data as well! (in a somewhat hacky fashion)
-                            alldata[int(row[i])] = ['?' for x in range(200)]
-                    if valid[i]:
-                        alldata[int(row[id_pos])][quiz*20 + val] = (row[i])
-                        val += 1
-                else:
-                    if i == id_pos:
-                        if int(row[i]) not in alldata: #Appends only people taking the final exam
-                            newcsv[int(row[i])] = ['?' for x in range(200)]
-                        else:
-                            newcsv[int(row[i])] = alldata[int(row[i])]
-                    if valid[i]:
-                        newcsv[int(row[id_pos])][quiz*20 + val] = (row[i])
-                        val += 1
+                if i == id_pos:
+                    if int(row[i]) not in newcsv: #Appends values for people that do not appear in data as well! (in a somewhat hacky fashion)
+                        newcsv[int(row[i])] = ['?' for x in range(200)]
+                if valid[i]:
+                    newcsv[int(row[id_pos])][quiz*20 + val] = (row[i])
+                    val += 1
         first = False
-
-writefile = open('combinedw?.csv', 'w')
-writer = csv.writer(writefile)
-writer.writerow(header)
-for uid, scores in newcsv.iteritems():
-    writer.writerow([uid]+scores)
+offset = 0
+for i in range(3):
+    writefile = open('combinedb'+str(i)+'.csv', 'w')
+    writer = csv.writer(writefile)
+    head = [header[0]]
+    for q in range(8):
+        head+=header[1+q*20+offset:1+q*20+offset+8-i]
+    for q in range(8):
+        if i==0:
+            head+=header[1+q*5+160:2+q*5+161]
+        elif i==1:
+            head+=header[1+q*5+162:2+q*5+163]
+        else:
+            head.append(header[1+q*5+164])
+    writer.writerow(head)
+    for uid, scores in newcsv.iteritems():
+        newrow = [uid]
+        for q in range(8):
+            newrow+=scores[q*20+offset:q*20+offset+8-i]
+        for q in range(8):
+            if i==0:
+                newrow+=scores[q*5+160:q*5+162]
+            elif i==1:
+                newrow+=scores[q*5+162:q*5+164]
+            else:
+                newrow.append(scores[q*5+164])
+        writer.writerow(newrow)
+    offset += 8-i
