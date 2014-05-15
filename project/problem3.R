@@ -36,14 +36,13 @@ units = c(0,1,2,3,4,5,6,7)
 correlationMatrix = cor(data, use = "na.or.complete")
 
 
-
-
 #find how correlations compare.
 correlationSums <- (apply(correlationMatrix, 2, sum )) -1
 correlationMeans <- correlationSums / (ncol(data) - 1 )
 View(correlationMeans)
 print(mean(correlationMeans))
-}
+
+
 #now lets compare the quize to the test
 quizCol <- correlationMatrix[,1:(20 * 8-2)]
 testRow <- quizCol[-(1:(20 * 8-2)), ]
@@ -55,7 +54,11 @@ for (i in units){
    f <- questionsInUnit[-((1:5) + 5 * i),]
    corInUnit <- mean(t)
    corOutUnit <- mean(f)
-   print(corInUnit - corOutUnit)
+   printf("mean corralation to week %d quiz: %f", i, corInUnit)
+   printf("max  corralation to week %d quiz: %f", i, max(t))
+   printf("mean corralation to other quizs: %f", corOutUnit)
+   printf("max  corralation to other quizs: %f", max(f))
+   printf("the diffence of corralation: %f", corInUnit - corOutUnit)
 }
 
 #make graphs
