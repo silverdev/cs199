@@ -49,6 +49,7 @@ quizCol <- correlationMatrix[,1:(20 * 8-2)]
 testRow <- quizCol[-(1:(20 * 8-2)), ]
 #View(testRow)
 df <- data.frame(vector = numeric(), unit = numeric())
+linedata <- data.frame(unit = numeric(), same = numeric(), others = numeric(), diff = numeric())
 units = c(0,1,2,3,4,5,6,7)
 for (i in units){
     questionsInUnit <- testRow[,grep(sprintf("^Q%dQ[0-9][0-9]_corr$",i),names(data))]
@@ -64,9 +65,14 @@ for (i in units){
     #View(t)
     #Sys.sleep(1200)
     df <- rbind(df, data.frame(vector= as.vector(t), unit=i))
+    linedata <- rbind(linedata, data.frame(unit = i, same = mean(t), other = mean(f), diff = corInUnit - corOutUnit))
 }
-ggplot(df, aes(y=vector, x=factor(unit))) + geom_boxplot()
-ggsave('quizcorrelationbox.pdf')
+ggplot(linedata, aes(unit)) + 
+  geom_line(aes(y = same, colour = "related")) + 
+  geom_line(aes(y = other, colour = "unrelated")) +
+  ylab("mean") +
+  ggtitle("mean correlation between questions")
+ggsave('correlationlines.pdf')
 
 #make graphs
 
