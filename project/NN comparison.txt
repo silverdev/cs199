@@ -1,0 +1,11 @@
+Imputed Data Linear Regression: 78.56499 in the whole imputed data.
+Imputed Data Linear Regression: 95.061773 in data with original Final exam info.
+
+NN      NN time     MSE-imputed     MSE-with-final
+3       156.717     78.56499        95.061773
+10      163.689     58.869989       91.972381
+20      162.320     58.614503       88.726988
+50      157.672     56.705741       85.704330
+100     159.602     58.028553       83.642519
+200     163.104     56.208945       84.729973
+500     177.064     58.060235       94.301959
