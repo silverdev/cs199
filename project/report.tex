@@ -117,7 +117,7 @@
 \section{Introduction}
 This assignment consisted of analysing the provided \emph{MOOC data} and determing whether we could predict final exam scores or determine whether bloom taxology levels actually provided a meaningful differentiation between questions. \\
 
-For that purpose, a dataset was provided by \emph{???}. The programming languages used have been \texttt{R} and \texttt{Python}, and this report have been typeset using \LaTeX.
+For that purpose, a dataset was provided by \emph{Magical Data Fairies}. The programming languages used have been \texttt{R} and \texttt{Python}, and this report have been typeset using \LaTeX.
 
 \section{Predicting exam scores}
 \subsection{Implementation}
@@ -125,29 +125,34 @@ For that purpose, a dataset was provided by \emph{???}. The programming language
 
 \section{Finding correlations}
 \subsection{Implementation}
-\lstinputlisting[firstline=87, lastline=112]{problem3.R}
+\lstinputlisting[firstline=1, lastline=73]{problem3.R}
 
 \newpage
 \subsubsection{Results}
-\vspace{-0.5cm}
+This figure shows a box and whisker plot of correlation for every question on a quiz to every related question on the final.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{quizcorrelationbox.pdf}
 \end{figure}
 
-\vspace{-0.5cm}
+\newpage
+
+This figure shows a Box and Whisker plot for every question on a quiz to the unrelated questions on the final.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{unrelatedcorrelationbox.pdf}
+\end{figure}
+\FloatBarrier
+
+\newpage
+
+This figure shows the mean correlations of quiz questions on related and unrelated questions on the final side by side.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{correlationlines.pdf}
 \end{figure}
 \FloatBarrier
 
-\vspace{-0.5cm}
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.7\textwidth,trim= 0 0 20 30, clip]{unrelatedcorrelationbox.pdf}
-\end{figure}
-\FloatBarrier
 
 \subsection{Conclusions}
 \subsubsection{Correlations}
