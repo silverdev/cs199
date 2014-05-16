@@ -1,5 +1,6 @@
 # Define functions.
 printf <- function(...) invisible(print(sprintf(...)))
+library(ggplot2)
 
 # Read the data.
 #toRm = c("Q4Q07_corr", "Q4Q13_corr")
@@ -39,27 +40,33 @@ correlationMatrix = cor(data, use = "na.or.complete")
 #find how correlations compare.
 correlationSums <- (apply(correlationMatrix, 2, sum )) -1
 correlationMeans <- correlationSums / (ncol(data) - 1 )
-View(correlationMeans)
-print(mean(correlationMeans))
+#View(correlationMeans)
+#print(mean(correlationMeans))
 
 
 #now lets compare the quize to the test
 quizCol <- correlationMatrix[,1:(20 * 8-2)]
 testRow <- quizCol[-(1:(20 * 8-2)), ]
 #View(testRow)
+df <- data.frame(vector = numeric(), unit = numeric())
 units = c(0,1,2,3,4,5,6,7)
 for (i in units){
-   questionsInUnit <- testRow[,grep(sprintf("^Q%dQ[0-9][0-9]_corr$",i),names(data))]
-   t <- questionsInUnit[(1:5) + 5 * i,]
-   f <- questionsInUnit[-((1:5) + 5 * i),]
-   corInUnit <- mean(t)
-   corOutUnit <- mean(f)
-   printf("mean corralation to week %d quiz: %f", i, corInUnit)
-   printf("max  corralation to week %d quiz: %f", i, max(t))
-   printf("mean corralation to other quizs: %f", corOutUnit)
-   printf("max  corralation to other quizs: %f", max(f))
-   printf("the diffence of corralation: %f", corInUnit - corOutUnit)
+    questionsInUnit <- testRow[,grep(sprintf("^Q%dQ[0-9][0-9]_corr$",i),names(data))]
+    t <- questionsInUnit[(1:5) + 5 * i,]
+    f <- questionsInUnit[-((1:5) + 5 * i),]
+    corInUnit <- mean(t)
+    corOutUnit <- mean(f)
+    printf("mean correlation of week %d quiz to week %d test questions: %f", i, i, corInUnit)
+    printf("max  correlation of week %d quiz to week %d test questions: %f", i, i, max(t))
+    printf("mean correlation of week %d quiz to other test questions: %f", i, corOutUnit)
+    printf("max  correlation of week %d quiz to other test questions: %f", i, max(f))
+    printf("the diffence of correlation: %f", corInUnit - corOutUnit)
+    #View(t)
+    #Sys.sleep(1200)
+    df <- rbind(df, data.frame(vector= as.vector(t), unit=i))
 }
+ggplot(df, aes(y=vector, x=factor(unit))) + geom_boxplot()
+ggsave('quizcorrelationbox.pdf')
 
 #make graphs
 
